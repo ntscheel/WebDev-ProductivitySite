@@ -1,0 +1,63 @@
+body{
+    font-family: Arial;
+}
+ul {
+    list-style: none;
+}
+table {
+    /*border: 1px solid black;*/
+    border-collapse: collapse;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+td, th {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #bdbbba;
+    margin: 10px;
+}
+#listHeader{
+    text-align: left;
+    width: 80%;
+    margin: 15px auto;
+}
+.checkbox_col {
+    width: 5%;
+}
+.remove{
+    font-size: .7rem;
+    margin-left: 3px;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+.desc_col {
+    width: 70%;
+    font-size: 1.1rem;
+}
+.cat_col {
+    font-size: .8rem;
+    width: 10%;
+    text-align: center;
+}
+.deadline_col {
+    width: 10%;
+    font-size: 1rem;
+}
+#newItemAndCatDiv{
+    border: 1px solid #bdbbba;
+    width: 79%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+}
+#newCatDiv{
+    display: none;
+}
+#newTaskHeader{
+    margin: 5px 0px;
+}
+.input-group {
+    margin: 5px 0px;
+}

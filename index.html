@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+<h1 id="listHeader">To-Do List</h1>
+<table>
+    <thead>
+        <tr>
+            <th onclick="sortTable(0);">Completed</th>
+            <th onclick="sortTable(1);">Description</th>
+            <th onclick="sortTable(2);">Category</th>
+            <th onclick="sortTable(3);">Deadline</th>
+            <th>Remove?</th>
+        </tr>
+    </thead>
+    <tbody id="todoList">
+
+    </tbody>
+</table>
+<div id="newItemAndCatDiv">
+    <h3 class="newItemHeader">Add New Task</h3>
+    <div class="input-group">
+        <label for="taskDesc">Description:</label>
+        <input type="text" name="desc" id="taskDesc">
+    </div>
+    <div class="input-group">
+        <label for="taskCat">Category:</label>
+        <select name="category" id="taskCat" onchange="showNewCat()"></select>
+    </div>
+    <div class="input-group">
+        <label for="taskDuedate">Deadline:</label>
+        <input id="taskDuedate" type="date" name="deadline">
+    </div>
+    <button id="submitNewTask" onclick="submitNewTask();">Add Task</button>
+    <div id="newCatDiv">
+        <h3 class="newItemHeader">New Category</h3>
+        <div class="input-group">
+            <label for="taskDuedate">Category Name:</label>
+            <input id="newCatTitle" type="text" name="newCatTitle">
+        </div>
+        <div class="input-group">
+            <label for="catColor">Category Color:</label>
+            <input id="catColor" type="color" name="catColor" value="#ff0000">
+        </div>
+        <button id="submitNewCat" onclick="addCategory();">Add Category</button>
+    </div>
+
+</div>
+
+
+<script src="todo.js"></script>
+</body>
+</html>

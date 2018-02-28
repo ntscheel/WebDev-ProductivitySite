@@ -10,10 +10,10 @@
 <table>
     <thead>
         <tr>
-            <th onclick="sortTable(0);">Completed</th>
-            <th onclick="sortTable(1);">Description</th>
-            <th onclick="sortTable(2);">Category</th>
-            <th onclick="sortTable(3);">Deadline</th>
+            <th onclick="sortTable(0, true);">Completed</th>
+            <th onclick="sortTable(1, true);">Description</th>
+            <th onclick="sortTable(2, true);">Category</th>
+            <th onclick="sortTable(3, true);">Deadline</th>
             <th>Remove?</th>
         </tr>
     </thead>
@@ -50,6 +50,7 @@
     </div>
 
 </div>
+<button onclick="resetTestTasks();">Reset</button>
 
 
 <script src="todo.js"></script>

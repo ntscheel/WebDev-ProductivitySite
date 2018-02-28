@@ -7,26 +7,37 @@ var options = [
     ["Test/Quiz","LightGreen"],
     ["Other","RebeccaPurple"]
 ];
-var tasks = [
-    {
-        complete: false,
-        desc: "Clean room",
-        cat: 1,
-        deadline: "2018-02-22"
-    },
-    {
-        complete: false,
-        desc: "Homework for Web Dev",
-        cat: 0,
-        deadline: "2018-03-02"
-    },
-    {
-        complete: true,
-        desc: "Study for Quiz 1",
-        cat: 2,
-        deadline: "2018-02-20"
-    }
-];
+var tasks;
+if (typeof(Storage) !== "undefined" && localStorage.getItem("taskJSON") != "") {
+
+    tasks = JSON.parse(localStorage.getItem("taskJSON"));
+    console.log("Parsed localStorage: ");
+    console.log(tasks);
+} else {
+    console.log("Local storage not allowed; Setting to default.");
+    tasks = [
+        {
+            complete: false,
+            desc: "Clean room",
+            cat: 1,
+            deadline: "2018-02-22"
+        },
+        {
+            complete: false,
+            desc: "Homework for Web Dev",
+            cat: 0,
+            deadline: "2018-03-02"
+        },
+        {
+            complete: true,
+            desc: "Study for Quiz 1",
+            cat: 2,
+            deadline: "2018-02-20"
+        }
+    ];
+}
+
+
 /*
  *  Function buildCategories() reads categories from the options array
  *  and adds them to the category select.
@@ -68,23 +79,14 @@ function showNewCat(){
     }
 }
 
-/*
- * Submits new task to to-do list
- */
-function submitNewTask(){
-    var desc = document.getElementById("taskDesc").value;
-    var catIndex = document.getElementById("taskCat").value;
-    var date = document.getElementById("taskDuedate").value;
-
-    var taskObj = {
-            complete: false,
-            desc: desc,
-            cat: catIndex,
-            deadline: date
-        };
-    tasks.push(taskObj);
-    console.log(tasks);
+function saveData(){
+    if (typeof(Storage) !== "undefined") {
+        localStorage.setItem("taskJSON", JSON.stringify(tasks));
+    } else {
+        // Sorry! No Web Storage support..
+    }
 }
+
 
 function buildTable(){
     var list = document.getElementById("todoList");
@@ -108,25 +110,64 @@ function buildTable(){
         newTask += '</tr>';
 
     }
+    list.innerHTML = "";
     list.innerHTML += newTask;
-    sortTable(curSortMethod);
+    saveData();
+    sortTable(curSortMethod, false);
 }
 buildTable();
 
 /*
- * TODO: removeTask removes a given task
+ * Submits new task to to-do list
+ */
+function submitNewTask(){
+    var desc = document.getElementById("taskDesc").value;
+    var catIndex = document.getElementById("taskCat").value;
+    var date = document.getElementById("taskDuedate").value;
+
+    var taskObj = {
+        complete: false,
+        desc: desc,
+        cat: catIndex,
+        deadline: date
+    };
+    tasks.push(taskObj);
+    console.log(tasks);
+    buildTable();
+}
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+};
+
+/*
+ * Removes a given task
  */
 function removeTask(index){
-    console.log("Remove task at index: " + index);
+    if (confirm("Remove task?")) {
+        console.log("Remove task at index: " + index);
+        if(index == 0){
+            tasks.shift();
+        }else{
+            tasks.remove(index, index);
+        }
+        console.log(tasks);
+    } else {
+        console.log("Deletion canceled.");
+    }
+    buildTable();
 }
 /*
  * Sorts columns in the to-do table; Based on function found at: https://www.w3schools.com/howto/howto_js_sort_table.asp
  */
-function sortTable(col) {
+function sortTable(col, swapDescSortAsc) {
     var table, rows, switching, i, x, y, shouldSwitch;
     table = document.getElementById("todoList");
     switching = true;
-    if(col != curSortMethod){
+    if(col != curSortMethod && swapDescSortAsc){
         descSortAsc = false;
         curSortMethod = col;
     }
@@ -169,10 +210,36 @@ function sortTable(col) {
             switching = true;
         }
     }
-    if(descSortAsc){
+    if(descSortAsc && swapDescSortAsc){
         descSortAsc = false;
     }else{
         descSortAsc = true;
     }
 }
-sortTable(curSortMethod);
+sortTable(curSortMethod, false);
+
+
+function resetTestTasks(){
+    tasks = [
+        {
+            complete: false,
+            desc: "Clean room",
+            cat: 1,
+            deadline: "2018-02-22"
+        },
+        {
+            complete: false,
+            desc: "Homework for Web Dev",
+            cat: 0,
+            deadline: "2018-03-02"
+        },
+        {
+            complete: true,
+            desc: "Study for Quiz 1",
+            cat: 2,
+            deadline: "2018-02-20"
+        }
+    ];
+    localStorage.setItem("taskJSON", JSON.stringify(tasks));
+    buildTable();
+}

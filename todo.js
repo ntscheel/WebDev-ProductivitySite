@@ -7,9 +7,35 @@ var options;
 // Initialize localStorage
 if (typeof(Storage) !== "undefined" && localStorage.getItem("taskJSON") != "") {
     console.log("LocalStorage is allowed for this browser.");
-    tasks = JSON.parse(localStorage.getItem("taskJSON"));
+    var tasksText = localStorage.getItem("taskJSON");
     var optionsText = localStorage.getItem("catJSON");
-    console.log(optionsText);
+    if(!tasksText){
+        console.log("Nothing in local storage");
+        tasks = [
+            {
+                complete: false,
+                desc: "Clean room",
+                cat: 1,
+                deadline: "2018-02-22"
+            },
+            {
+                complete: false,
+                desc: "Homework for Web Dev",
+                cat: 0,
+                deadline: "2018-03-02"
+            },
+            {
+                complete: true,
+                desc: "Study for Quiz 1",
+                cat: 2,
+                deadline: "2018-02-20"
+            }
+        ];
+        // localStorage.setItem("taskJSON", JSON.stringify(tasks));
+    }else{
+        console.log(tasksText);
+        tasks = JSON.parse(tasksText);
+    }
     if(!optionsText){
         console.log("No categories in local storage - setting to default.");
         options = [
@@ -125,7 +151,7 @@ function buildTable(){
         newTask += '<td class="desc_col">'+curTask.desc+'</td>';
         newTask += '<td class="cat_col">'+catText+'</td>';
         newTask += '<td class="deadline_col">'+curTask.deadline+'</td>';
-        newTask += '<th class="remove"><span class="deleteX" onclick="removeTask(\'+i+\')">&times;</span></th>';
+        newTask += '<th class="remove"><span class="deleteX" onclick="removeTask('+i+')">&times;</span></th>';
         newTask += '</tr>';
     }
     list.innerHTML = "";

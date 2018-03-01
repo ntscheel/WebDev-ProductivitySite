@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="todo.css">
 </head>
 <body>
-<h1 id="listHeader">To-Do List</h1>
+<h1 class="listHeader">To-Do List</h1>
+<p class="listHeader"><b>To-Do List</b> - <a style="color: #353535;" href="gallery.html">Photo Gallery</a></p>
 <table>
     <thead>
         <tr>
@@ -14,28 +15,33 @@
             <th onclick="sortTable(1, true);">Description</th>
             <th onclick="sortTable(2, true);">Category</th>
             <th onclick="sortTable(3, true);">Deadline</th>
-            <th>Remove?</th>
+            <th>Remove</th>
         </tr>
     </thead>
     <tbody id="todoList">
 
     </tbody>
 </table>
+<!-- New Task -->
 <div id="newItemAndCatDiv">
-    <h3 class="newItemHeader">Add New Task</h3>
-    <div class="input-group">
-        <label for="taskDesc">Description:</label>
-        <input type="text" name="desc" id="taskDesc">
+    <div id="newTaskDiv">
+        <h3 class="newItemHeader">Add New Task</h3>
+        <div class="input-group">
+            <label for="taskDesc">Description:</label>
+            <input type="text" name="desc" id="taskDesc">
+        </div>
+        <div class="input-group">
+            <label for="taskCat">Category:</label>
+            <select name="category" id="taskCat" onchange="showNewCat()"></select>
+        </div>
+        <div class="input-group">
+            <label for="taskDuedate">Deadline:</label>
+            <input id="taskDuedate" type="date" name="deadline">
+        </div>
+        <button id="submitNewTask" class="btn submit" onclick="submitNewTask();">Add Task</button>
     </div>
-    <div class="input-group">
-        <label for="taskCat">Category:</label>
-        <select name="category" id="taskCat" onchange="showNewCat()"></select>
-    </div>
-    <div class="input-group">
-        <label for="taskDuedate">Deadline:</label>
-        <input id="taskDuedate" type="date" name="deadline">
-    </div>
-    <button id="submitNewTask" onclick="submitNewTask();">Add Task</button>
+
+    <!-- New Category -->
     <div id="newCatDiv">
         <h3 class="newItemHeader">New Category</h3>
         <div class="input-group">
@@ -46,12 +52,11 @@
             <label for="catColor">Category Color:</label>
             <input id="catColor" type="color" name="catColor" value="#ff0000">
         </div>
-        <button id="submitNewCat" onclick="addCategory();">Add Category</button>
+        <button id="submitNewCat" class="btn submit" onclick="addCategory();">Add Category</button>
+        <button id="cancelNewCat" class="btn cancel" onclick="cancelAddCategory();">Cancel</button>
     </div>
 
 </div>
-<button onclick="resetTestTasks();">Reset</button>
-
 
 <script src="todo.js"></script>
 </body>

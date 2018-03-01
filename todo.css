@@ -1,5 +1,7 @@
 body{
     font-family: Arial;
+    background-color: #d1e1fc;
+    color: #353535;
 }
 ul {
     list-style: none;
@@ -17,19 +19,46 @@ td, th {
     border: 1px solid #bdbbba;
     margin: 10px;
 }
-#listHeader{
+
+.btn {
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.btn.submit{
+    background-color: #1eb22a;
+}
+.btn.cancel{
+    background-color: #c43a3a;
+}
+
+.listHeader{
     text-align: left;
     width: 80%;
-    margin: 15px auto;
+    margin: 20px auto;
 }
 .checkbox_col {
     width: 5%;
 }
 .remove{
-    font-size: .7rem;
+    font-size: 1.2rem;
+    text-align: center;
     margin-left: 3px;
     margin-bottom: 3px;
+}
+.deleteX {
+    border: 1px solid #7a7a7a;
+    background-color: #c43a3a;
+    color: #353535;
     cursor: pointer;
+    padding: 5px 10px;
+    border-radius:20px;
+    -moz-border-radius:20px;
+    -webkit-border-radius:20px;
 }
 .desc_col {
     width: 70%;
@@ -42,7 +71,8 @@ td, th {
 }
 .deadline_col {
     width: 10%;
-    font-size: 1rem;
+    font-size: .8rem;
+    text-align: center;
 }
 #newItemAndCatDiv{
     border: 1px solid #bdbbba;
@@ -60,4 +90,51 @@ td, th {
 }
 .input-group {
     margin: 5px 0px;
+}
+
+/* CHECKBOX STYLING */
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+    position: relative;
+    padding-left: 1.95em;
+    cursor: pointer;
+}
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+    content: '';
+    position: absolute;
+    left: 10; top: 0;
+    width: 1.25em; height: 1.25em;
+    border: 2px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+    content: '✔';
+    position: absolute;
+    top: .2em; left: 1.55em;
+    font-size: 1.4em;
+    line-height: 0.8;
+    color: #09ad7e;
+    transition: all .2s;
+    font-family: Helvetica, Arial, sans-serif;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+    opacity: 0;
+    transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+    opacity: 1;
+    transform: scale(1);
 }

@@ -1,20 +1,37 @@
 //GLOBAL VARIABLES
 var descSortAsc = false;
 var curSortMethod = 3;
-var options = [
-    ["Homework", "DeepSkyBlue"],
-    ["Chore/Errand", "Lavender"],
-    ["Test/Quiz","LightGreen"],
-    ["Other","RebeccaPurple"]
-];
 var tasks;
-if (typeof(Storage) !== "undefined" && localStorage.getItem("taskJSON") != "") {
+var options;
 
+// Initialize localStorage
+if (typeof(Storage) !== "undefined" && localStorage.getItem("taskJSON") != "") {
+    console.log("LocalStorage is allowed for this browser.");
     tasks = JSON.parse(localStorage.getItem("taskJSON"));
+    var optionsText = localStorage.getItem("catJSON");
+    console.log(optionsText);
+    if(!optionsText){
+        console.log("No categories in local storage - setting to default.");
+        options = [
+            ["Homework", "DeepSkyBlue"],
+            ["Chore/Errand", "Lavender"],
+            ["Test/Quiz","LightGreen"],
+            ["Other","RebeccaPurple"]
+        ];
+        localStorage.setItem("catJSON", JSON.stringify(options));
+    }else{
+        options = JSON.parse(optionsText);
+    }
     console.log("Parsed localStorage: ");
     console.log(tasks);
 } else {
     console.log("Local storage not allowed; Setting to default.");
+    options = [
+        ["Homework", "DeepSkyBlue"],
+        ["Chore/Errand", "Lavender"],
+        ["Test/Quiz","LightGreen"],
+        ["Other","RebeccaPurple"]
+    ];
     tasks = [
         {
             complete: false,
@@ -38,7 +55,7 @@ if (typeof(Storage) !== "undefined" && localStorage.getItem("taskJSON") != "") {
 }
 
 
-/*
+/**
  *  Function buildCategories() reads categories from the options array
  *  and adds them to the category select.
  */
@@ -53,11 +70,9 @@ function buildCategories(){
     optionBuilder += '<option value="NEWCAT">New Category</option>';
     select.innerHTML = optionBuilder;
 }
-buildCategories();
 
-/*
- *  Reads in values from new category inputs and updates the
- *  category select input
+/**
+ *  Reads in values from new category inputs and updates the category select input
  */
 function addCategory(){
     var title = document.getElementById("newCatTitle").value;
@@ -65,29 +80,33 @@ function addCategory(){
     console.log(title + " " + color);
     console.log(options);
     options.push([title,color]);
+    localStorage.setItem("catJSON", JSON.stringify(options));
     buildCategories();
     document.getElementById("newCatDiv").style.display = "none";
+    document.getElementById("newTaskDiv").style.display = "block";
 }
 
-/*
+/**
  * Shows new category input when "New category" is selected
  */
 function showNewCat(){
     var select = document.getElementById("taskCat").value;
     if (select == "NEWCAT"){
         document.getElementById("newCatDiv").style.display = "block";
+        document.getElementById("newTaskDiv").style.display = "none";
     }
 }
-
-function saveData(){
-    if (typeof(Storage) !== "undefined") {
-        localStorage.setItem("taskJSON", JSON.stringify(tasks));
-    } else {
-        // Sorry! No Web Storage support..
-    }
+/**
+ * Shows new category input when "New category" is selected
+ */
+function cancelAddCategory(){
+        document.getElementById("newCatDiv").style.display = "none";
+        document.getElementById("newTaskDiv").style.display = "block";
 }
 
-
+/**
+ * Builds table using tasks array. Called on load and when task is added/removed
+ */
 function buildTable(){
     var list = document.getElementById("todoList");
     var newTask = "";
@@ -98,24 +117,27 @@ function buildTable(){
 
         newTask += '<tr style="background-color: '+catColor+'" id="row_'+i+'">';
         if(curTask.complete){
-            newTask += '<td class="checkbox_col"><input type="checkbox" checked></td>';
+            newTask += '<td class="checkbox_col"><input type="checkbox" id="box\'+i+\'" checked/><label for="box\'+i+\'"></label></td>';
         }else{
-            newTask += '<td class="checkbox_col"><input type="checkbox"></td>';
+            newTask += '<td class="checkbox_col"><input type="checkbox" id="box'+i+'" /><label for="box'+i+'"></label></td>';
         }
 
         newTask += '<td class="desc_col">'+curTask.desc+'</td>';
         newTask += '<td class="cat_col">'+catText+'</td>';
         newTask += '<td class="deadline_col">'+curTask.deadline+'</td>';
-        newTask += '<th class="remove" onclick="removeTask('+i+')">(remove)</th>';
+        newTask += '<th class="remove"><span class="deleteX" onclick="removeTask(\'+i+\')">&times;</span></th>';
         newTask += '</tr>';
-
     }
     list.innerHTML = "";
     list.innerHTML += newTask;
-    saveData();
+
+    //Save tasks to localStorage if available
+    if (typeof(Storage) !== "undefined") {
+        localStorage.setItem("taskJSON", JSON.stringify(tasks));
+    }
+    //Sort table to account for new task
     sortTable(curSortMethod, false);
 }
-buildTable();
 
 /*
  * Submits new task to to-do list
@@ -125,15 +147,23 @@ function submitNewTask(){
     var catIndex = document.getElementById("taskCat").value;
     var date = document.getElementById("taskDuedate").value;
 
-    var taskObj = {
-        complete: false,
-        desc: desc,
-        cat: catIndex,
-        deadline: date
-    };
-    tasks.push(taskObj);
-    console.log(tasks);
-    buildTable();
+    if(desc == "" || catIndex == ""){
+        alert("Missing description or category!")
+    }else{
+        if(date == ""){
+            date = "---";
+        }
+        var taskObj = {
+            complete: false,
+            desc: desc,
+            cat: catIndex,
+            deadline: date
+        };
+        tasks.push(taskObj);
+        console.log(tasks);
+        buildTable();
+    }
+
 }
 
 // Array Remove - By John Resig (MIT Licensed)
@@ -160,6 +190,7 @@ function removeTask(index){
     }
     buildTable();
 }
+
 /*
  * Sorts columns in the to-do table; Based on function found at: https://www.w3schools.com/howto/howto_js_sort_table.asp
  */
@@ -203,7 +234,6 @@ function sortTable(col, swapDescSortAsc) {
                     }
                 }
             }
-
         }
         if (shouldSwitch) {
             rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
@@ -216,9 +246,8 @@ function sortTable(col, swapDescSortAsc) {
         descSortAsc = true;
     }
 }
-sortTable(curSortMethod, false);
 
-
+//Add three test tasks to task list -  for testing only
 function resetTestTasks(){
     tasks = [
         {
@@ -243,3 +272,8 @@ function resetTestTasks(){
     localStorage.setItem("taskJSON", JSON.stringify(tasks));
     buildTable();
 }
+
+//Initial run of builder functions
+buildCategories();
+buildTable();
+sortTable(curSortMethod, false);

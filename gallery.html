@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+<div id="container">
+    <h1>Image Gallery</h1>
+    <p><a id="todo_link" href="index.html">To-Do List</a> - <b>Photo Gallery</b></p>
+    <table id="imageTable">
+    </table>
+
+    <div id="lightboxModal" class="modal">
+        <div class="modal-content">
+        <span class="float-right">
+            <span class="modal-btn stop" onclick="stopSlideshow()">&#9632;</span>
+            <span class="modal-btn play" onclick="startSlideshow()">&#9658;</span>
+            <span class="modal-btn close" onclick="modal.style.display = 'none';">&times;</span>
+        </span>
+
+            <span id="img_show"></span>
+            <br>
+            <a class="prev" onclick="showImg(-1)">&#10094;</a>
+            <a class="next" onclick="showImg(1)">&#10095;</a>
+            <div id="slideshow">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="gallery.js"></script>
+</body>
+</html>

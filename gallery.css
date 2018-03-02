@@ -24,23 +24,20 @@ td{
     width: fit-content;
 }
 .modalimg {
-    height: 80%;
+    height: 50vh;
     width: auto;
-    position: relative;
-    left: 0;
-    right: 0;
     opacity: 1;
+    margin: 0 auto;
     transition: left 0.5s ease-out, right 0.5s ease-out, opacity 0.3s;
 }
 .modalimg.load{
-    right: 250px;
     opacity: 0;
 }
 
 .slideshowimg{
-    height: 15vh;
+    height: auto;
     border: 1px solid #7a7a7a;
-    width: auto;
+    width: 10%;
     display: inline;
     margin: 0 10px;
 }
